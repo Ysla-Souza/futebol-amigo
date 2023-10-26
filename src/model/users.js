@@ -1,4 +1,4 @@
-const  model = require('../service/users');
+const  connection = require('../connection');
 
 const findByEmail = async (email) => {
     try {
