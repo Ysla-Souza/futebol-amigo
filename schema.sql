@@ -26,7 +26,11 @@ DROP TABLE IF EXISTS `mydb`.`matches` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`matches` (
   `matches_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  `data_time` DATETIME(6) NULL);
+  `adminId` INT NOT NULL,
+  `data_time` DATETIME(6) NULL,
+  FOREIGN KEY (`adminId`) REFERENCES `user`(`id`)
+);
+
 
 
 -- -----------------------------------------------------

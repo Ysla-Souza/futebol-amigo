@@ -38,6 +38,18 @@ class UserModel {
     }
   }
 
+  async findById(id) {
+    const connection = await mysql.createConnection(this.connectionConfig);
+    try {
+      const [query] = await connection.execute('SELECT * FROM mydb.user WHERE id = ?', [id]);
+      return query;
+    } catch (error) {
+      throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
+    } finally {
+      connection.end();
+    }
+  }
+
   async registerUser(body) {
     const { name, nickname, phone, email, password } = body;
     const connection = await mysql.createConnection(this.connectionConfig);
