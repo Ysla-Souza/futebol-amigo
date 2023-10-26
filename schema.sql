@@ -55,6 +55,7 @@ DROP TABLE IF EXISTS `mydb`.`user_has_matches` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`user_has_matches` (
   `user_id` INT NOT NULL,
   `matches_matches_id` INT NOT NULL,
+  `invitation` varchar(20) NOT NULL, 
   PRIMARY KEY (`user_id`, `matches_matches_id`),
   INDEX `fk_user_has_matches_matches1_idx` (`matches_matches_id` ASC) VISIBLE,
   INDEX `fk_user_has_matches_user_idx` (`user_id` ASC) VISIBLE,

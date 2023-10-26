@@ -16,18 +16,18 @@ class MatchController {
         }
     };
 
-//   async findAllByUser(req, res) {
-//     const { email } = req.body;
-//     try {
-//       // Procura um usuário pelo email e retorna o resultado da busca
-//       const find = await this.matchService.findAllByUser(email);
-//       if (find) return res.status(200).json(find);
-//       return res.status(200).json({ message: 'Nenhum usuário com o e-mail informado foi encontrado' });
-//     } catch (error) {
-//       // Se ocorrer um erro, retorna uma resposta de erro
-//       return res.status(400).json({ message: `Try again later ${error.message}` });
-//     }
-//   };
+  async findAllByUser(req, res) {
+    const { email } = req.body;
+    try {
+      // Procura um usuário pelo email e retorna o resultado da busca
+      const find = await this.matchService.findAllByUser(email);
+      if (find) return res.status(200).json(find);
+      return res.status(200).json({ message: 'Nenhum usuário com o e-mail informado foi encontrado' });
+    } catch (error) {
+      // Se ocorrer um erro, retorna uma resposta de erro
+      return res.status(400).json({ message: `Try again later ${error.message}` });
+    }
+  };
 
   async registerMatch(req, res) {
     const { name } = req.body;
@@ -48,24 +48,24 @@ class MatchController {
     }
   };
 
-//   async updateMatch(req, res) {
-//     const { email, name } = req.body;
-//     try {
-//       // Busca um usuário pelo seu email por meio da função findUser
-//       const findUser = await this.matchService.findByEmail(email);
-//       // Se não existir um usuário já cadastrado com este email, retorna um erro 400
-//       if (!findUser) return res.status(400).json({ message: `User not found` });
-//       // Caso exista um usuário com este email, aciona a camada de serviço para realizar a atualização do mesmo
-//       const update = await this.matchService.updateUser(req.body);
-//       // Se houver retorno na função da camada de serviço, então o usuário foi atualizado com sucesso
-//       if (update) return res.status(200).json(update);
-//       // Caso não haja retorno na atualização, logo ocorreu um problema ao realizá-la. Sendo assim, se faz necessário retornar um erro 400 informando isto.
-//       return res.status(400).send(`An error occurred while updating the user ${name}. Please try again.`);
-//     } catch (error) {
-//       // Se ocorrer um erro, retorna uma resposta de erro
-//       return res.status(400).json({ message: `Please, try again (${error.message})` });
-//     }
-//   };
+  async updateMatch(req, res) {
+    const { name } = req.body;
+    try {
+      // Busca um usuário pelo seu email por meio da função findUser
+      const findMatch = await this.matchService.findByName(name);
+      // Se não existir um usuário já cadastrado com este email, retorna um erro 400
+      if (!findMatch) return res.status(400).json({ message: `Match not found` });
+      // Caso exista um usuário com este email, aciona a camada de serviço para realizar a atualização do mesmo
+      const update = await this.matchService.updateMatch(req.body);
+      // Se houver retorno na função da camada de serviço, então o usuário foi atualizado com sucesso
+      if (update) return res.status(200).json(update);
+      // Caso não haja retorno na atualização, logo ocorreu um problema ao realizá-la. Sendo assim, se faz necessário retornar um erro 400 informando isto.
+      return res.status(400).send(`An error occurred while updating the Match ${name}. Please try again.`);
+    } catch (error) {
+      // Se ocorrer um erro, retorna uma resposta de erro
+      return res.status(400).json({ message: `Please, try again (${error.message})` });
+    }
+  };
 
   async deleteMatch(req, res) {
     const { name } = req.body;

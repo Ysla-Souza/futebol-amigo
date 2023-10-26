@@ -49,17 +49,17 @@ class MatchModel {
     }
   }
 
-//   async findAllByUser(name) {
-//     const connection = await mysql.createConnection(this.connectionConfig);
-//     try {
-//       const [query] = await connection.execute('SELECT * FROM mydb.matches WHERE email = ?', [email]);
-//       return query;
-//     } catch (error) {
-//       throw new Error(`An error occurred while trying to search for the Match. Try again later (${error.message})`);
-//     } finally {
-//       connection.end();
-//     }
-//   }
+  async findAllByUser(id) {
+    const connection = await mysql.createConnection(this.connectionConfig);
+    try {
+      const query = await connection.execute('SELECT matches_matches_id FROM mydb.user_has_matches WHERE user_id = ?', [id]);
+      return query[0].map((item) => item.matches_matches_id);
+    } catch (error) {
+      throw new Error(`An error occurred while trying to search for the Match. Try again later (${error.message})`);
+    } finally {
+      connection.end();
+    }
+  }
 
   async registerMatch(body) {
     const { name, adminId, date, hours, guests } = body;
@@ -89,8 +89,7 @@ class MatchModel {
       const [match_id] = await this.findByName(name);
 
       for (let i = 0; i < guests.length; i += 1) {
-        console.log(guests[i], match_id);
-        await connection.execute('INSERT INTO mydb.user_has_matches (user_id, matches_matches_id) VALUES (?, ?)', [guests[i], match_id.matches_id]);
+        await connection.execute('INSERT INTO mydb.user_has_matches (user_id, matches_matches_id, invitation) VALUES (?, ?, ?)', [guests[i], match_id.matches_id]);
       }
       await connection.commit();
     } catch (error) {
@@ -101,25 +100,25 @@ class MatchModel {
     }
   };
 
-//   async updateMatch(body) {
-//     const { name, adminId, date, hours } = body;
-//     const dateTime = `${date} ${hours}`;
-//     const connection = await mysql.createConnection(this.connectionConfig);
-//     try {
-//       await connection.beginTransaction();
-//       const update = await connection.execute(
-//         'UPDATE mydb.matches SET name = ?, adminId = ?, data_time = ?',
-//         [name, adminId, dateTime]
-//       );
-//       await connection.commit();
-//       return update;
-//     } catch (error) {
-//       await connection.rollback();
-//       throw new Error(`An error occurred while trying to update the Match. Try again later (${error.message})`);
-//     } finally {
-//       connection.end();
-//     }
-//   }
+  async updateMatch(body) {
+    const { name, adminId, date, hours } = body;
+    const dateTime = `${date} ${hours}`;
+    const connection = await mysql.createConnection(this.connectionConfig);
+    try {
+      await connection.beginTransaction();
+      const update = await connection.execute(
+        'UPDATE mydb.matches SET name = ?, adminId = ?, data_time = ? WHERE name = ?',
+        [name, adminId, dateTime, name]
+      );
+      await connection.commit();
+      return update;
+    } catch (error) {
+      await connection.rollback();
+      throw new Error(`An error occurred while trying to update the Match. Try again later (${error.message})`);
+    } finally {
+      connection.end();
+    }
+  }
 
   async deleteMatch(body) {
     const { name } = body;
