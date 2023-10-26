@@ -93,6 +93,8 @@ class UserModel {
     const connection = await mysql.createConnection(this.connectionConfig);
     try {
       await connection.beginTransaction();
+      const [findUser] = await this.findByEmail(email);
+      await connection.execute('DELETE FROM mydb.user_has_matches WHERE user_id = ?', [findUser.id]);
       const remove = await connection.execute('DELETE FROM mydb.user WHERE email = ?', [email]);
       await connection.commit();
       return remove;

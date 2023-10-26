@@ -67,24 +67,24 @@ class MatchController {
 //     }
 //   };
 
-//   async deleteMatch(req, res) {
-//     const { email, name } = req.body;
-//     try {
-//       // Busca um usuário pelo seu email por meio da função findUser
-//       const findUser = await this.matchService.findByEmail(email);
-//       // Se não existir um usuário já cadastrado com este email, retorna um erro 400
-//       if (!findUser) return res.status(400).json({ message: `User not found` });
-//       // Caso exista um usuário com este email, aciona a camada de serviço para realizar a exclusão do mesmo
-//       const deleteU = await this.matchService.deleteUser(req.body);
-//       // Realiza uma nova consulta por email para garantir que não existe mais um usuário com o email informado
-//       if (deleteU) return res.status(200).json({ message: `User ${name} deleted successfully` });
-//       // Caso o usuário seja encontrado pelo seu email, logo ocorreu um problema ao deletar o mesmo. Sendo assim, se faz necessário retornar um erro 400 informando isto.
-//       return res.status(400).send(`An error occurred while removing the user ${name}. Please try again.`);
-//     } catch (error) {
-//       // Se ocorrer um erro, retorna uma resposta de erro
-//       return res.status(400).json({ message: `Please, try again (${error.message})` });
-//     }
-//   };
+  async deleteMatch(req, res) {
+    const { name } = req.body;
+    try {
+      // Busca um usuário pelo seu email por meio da função findUser
+      const findUser = await this.matchService.findByName(name);
+      // Se não existir um usuário já cadastrado com este email, retorna um erro 400
+      if (!findUser) return res.status(400).json({ message: `User not found` });
+      // Caso exista um usuário com este email, aciona a camada de serviço para realizar a exclusão do mesmo
+      const deleteU = await this.matchService.deleteMatch(req.body);
+      // Realiza uma nova consulta por email para garantir que não existe mais um usuário com o email informado
+      if (deleteU) return res.status(200).json({ message: `User ${name} deleted successfully` });
+      // Caso o usuário seja encontrado pelo seu email, logo ocorreu um problema ao deletar o mesmo. Sendo assim, se faz necessário retornar um erro 400 informando isto.
+      return res.status(400).send(`An error occurred while removing the user ${name}. Please try again.`);
+    } catch (error) {
+      // Se ocorrer um erro, retorna uma resposta de erro
+      return res.status(400).json({ message: `Please, try again (${error.message})` });
+    }
+  };
 }
 
 module.exports = MatchController;
