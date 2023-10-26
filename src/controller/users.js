@@ -3,6 +3,16 @@ const UserService = require('../service/users');
 class UserController {
   userService = new UserService();
 
+  async loginUser(req, res) {
+    try {
+        const loginUser = await this.userService.loginUser(req.body);
+        if (loginUser) return res.status(200).json({ message: 'welcome' });
+        return res.status(400).json({ message: 'email or password incorrects' });
+    } catch (error) {
+        throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
+    }
+  };
+
   async findByEmail(req, res) {
     const { email } = req.body;
     try {

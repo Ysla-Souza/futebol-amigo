@@ -3,7 +3,7 @@ const md5 = require('md5');
 
 class UserModel {
 
-  async login(body) {
+  async loginUser(body) {
     const { email, password } = body;
     try {
         const [query] = await connection.execute('SELECT * FROM mydb.user WHERE email = ? AND password = ?', [email, md5(password)]);
@@ -11,7 +11,7 @@ class UserModel {
     } catch (error) {
         throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
     }
-  }
+  };
 
   async findByEmail(email) {
     try {

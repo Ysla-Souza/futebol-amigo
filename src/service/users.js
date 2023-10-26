@@ -3,6 +3,15 @@ const UserModel = require('../model/users');
 class UserService {
   userModel = new UserModel();
 
+  async loginUser(body) {
+    try {
+        const [login] = await this.userModel.loginUser(body);
+        return login;
+    } catch (error) {
+        throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
+    }
+  };
+
   async findByEmail(email) {
     try {
       const find = await this.userModel.findByEmail(email);
