@@ -36,7 +36,7 @@ class MatchService {
       } 
       return null;
     } catch (error) {
-      throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to search for the Match. Try again later (${error.message})`);
     }
   };
 
@@ -71,7 +71,7 @@ class MatchService {
       } 
       return null;
     } catch (error) {
-      throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to search for the Match. Try again later (${error.message})`);
     }
   };
 
@@ -97,7 +97,7 @@ class MatchService {
       } 
       return null;
     } catch (error) {
-      throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to search for the Match. Try again later (${error.message})`);
     }
   };
 
@@ -111,9 +111,9 @@ class MatchService {
         const findMatch = await this.findByName(body.name, `Match ${body.name} registered successfully`);
         return findMatch;
       } 
-      throw new Error(`An error occurred while trying to register for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to register for the Match. Try again later (${error.message})`);
     } catch (error) {
-      throw new Error(`An error occurred while trying to register for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to register for the Match. Try again later (${error.message})`);
     }
   };
 
@@ -126,9 +126,9 @@ class MatchService {
       if (update[0].affectedRows > 0) {
         const [updatedMatch] = await this.matchModel.findByName(body.name);
         return this.findById(updatedMatch.matches_id);
-      } throw new Error(`An error occurred while trying to update for the user. Try again later (${error.message})`);
+      } throw new Error(`An error occurred while trying to update for the Match. Try again later (${error.message})`);
     } catch (error) {
-      throw new Error(`An error occurred while trying to update for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to update for the Match. Try again later (${error.message})`);
     }
   };
 
@@ -139,7 +139,7 @@ class MatchService {
       const [remove] = await this.matchModel.deleteMatch(body);
       return (remove.affectedRows > 0);
     } catch (error) {
-      throw new Error(`An error occurred while trying to delete for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to delete for the Match. Try again later (${error.message})`);
     }
   };
 }

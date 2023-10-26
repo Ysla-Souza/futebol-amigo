@@ -19,7 +19,7 @@ class MatchModel {
       const [query] = await connection.execute('SELECT * FROM mydb.matches WHERE name = ?', [name]);
       return query;
     } catch (error) {
-      throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to search for the Match. Try again later (${error.message})`);
     } finally {
       connection.end();
     }
@@ -31,7 +31,7 @@ class MatchModel {
       const query = await connection.execute('SELECT user_id FROM mydb.user_has_matches WHERE matches_matches_id = ?', [id]);
       return query[0].map((item) => item.user_id);
     } catch (error) {
-      throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to search for the Match. Try again later (${error.message})`);
     } finally {
       connection.end();
     }
@@ -43,7 +43,7 @@ class MatchModel {
       const [query] = await connection.execute('SELECT * FROM mydb.matches WHERE matches_id = ?', [id]);
       return query;
     } catch (error) {
-      throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to search for the Match. Try again later (${error.message})`);
     } finally {
       connection.end();
     }
