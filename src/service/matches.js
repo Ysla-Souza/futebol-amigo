@@ -120,8 +120,7 @@ class MatchService {
   async updateMatch(body) {
     try {
       const findId = await this.findByName(body.name);
-      await this.matchModel.deleteMatchInRelashionship(findId.id);
-      await this.matchModel.registerRelashionship(body);
+      await this.matchModel.updateRelashionship(body);
       const update = await this.matchModel.updateMatch(body);
       if (update[0].affectedRows > 0) {
         const [updatedMatch] = await this.matchModel.findByName(body.name);

@@ -89,8 +89,37 @@ class MatchModel {
       const [match_id] = await this.findByName(name);
 
       for (let i = 0; i < guests.length; i += 1) {
-        await connection.execute('INSERT INTO mydb.user_has_matches (user_id, matches_matches_id, invitation) VALUES (?, ?, ?)', [guests[i], match_id.matches_id]);
+        await connection.execute('INSERT INTO mydb.user_has_matches (user_id, matches_matches_id, invitation) VALUES (?, ?, ?)', [guests[i], match_id.matches_id, 'pendente']);
       }
+      await connection.commit();
+    } catch (error) {
+      await connection.rollback();
+      throw new Error(`An error occurred while trying to register for the Match. Try again later (${error.message})`);
+    } finally {
+      connection.end();
+    }
+  };
+
+  async updateRelashionship(body) {
+    console.log(body);
+    const { guests } = body;
+    const connection = await mysql.createConnection(this.connectionConfig);
+    try {
+      await connection.beginTransaction();
+      const [findMatchId] = await this.findByName(body.name);
+      for (let i = 0; i < guests.length; i += 1) {
+        const [search] = await connection.execute('SELECT * FROM mydb.user_has_matches WHERE matches_matches_id = ? AND user_id = ?', [findMatchId.matches_id, guests[i]]);
+        console.log(search);
+        if (search.length === 0) await connection.execute('INSERT INTO mydb.user_has_matches (matches_matches_id, user_id, invitation) VALUES (?, ?, ?)', [findMatchId.matches_id, guests[i], 'pendente']);
+      }
+      const [search] = await connection.execute('SELECT user_id FROM mydb.user_has_matches WHERE matches_matches_id = ?', [findMatchId.matches_id]);
+      const listOfUsersExistents = search.map(item => item.user_id);
+      for (let i = 0; i < listOfUsersExistents.length; i += 1) {
+        if (!guests.includes(listOfUsersExistents[i])) {
+          await connection.execute('DELETE FROM mydb.user_has_matches WHERE matches_matches_id = ? AND user_id = ?', [findMatchId.matches_id, listOfUsersExistents[i]]);
+        };
+      }
+
       await connection.commit();
     } catch (error) {
       await connection.rollback();

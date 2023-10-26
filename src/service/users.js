@@ -3,6 +3,15 @@ const UserModel = require('../model/users');
 class UserService {
   userModel = new UserModel();
 
+  async updateInvitation(body) {
+    try {
+        const updt = await this.userModel.updateInvitation(body.match_id, body.user_id, body.choice);
+        return updt;
+    } catch (error) {
+        throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
+    }
+  };
+
   async loginUser(body) {
     try {
         const [login] = await this.userModel.loginUser(body);

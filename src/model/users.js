@@ -13,6 +13,18 @@ class UserModel {
     };
   }
 
+  async updateInvitation(match_id, user_id, choice) {
+    const connection = await mysql.createConnection(this.connectionConfig);
+    try {
+      const [query] = await connection.execute('UPDATE mydb.user_has_matches SET invitation = ?  WHERE user_id = ? AND matches_matches_id = ?', [choice, user_id, match_id]);
+      return query;
+    } catch (error) {
+      throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
+    } finally {
+      connection.end();
+    }
+  }
+
   async loginUser(body) {
     const { email, password } = body;
     const connection = await mysql.createConnection(this.connectionConfig);

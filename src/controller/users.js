@@ -3,6 +3,16 @@ const UserService = require('../service/users');
 class UserController {
   userService = new UserService();
 
+  async updateInvitation(req, res) {
+    try {
+        const upInvitation = await this.userService.updateInvitation(req.body);
+        if (upInvitation) return res.status(200).json({ message: `You choice '${req.body.choice}' was sent` });
+        return res.status(400).json({ message: `An error occurred while trying to update your choice. Try again later (${error.message})` });
+    } catch (error) {
+        throw new Error(`An error occurred while trying to update your choice. Try again later (${error.message})`);
+    }
+  };
+
   async loginUser(req, res) {
     try {
         const loginUser = await this.userService.loginUser(req.body);
