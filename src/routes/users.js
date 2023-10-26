@@ -1,11 +1,13 @@
 const express = require('express');
-const { findByEmail, registerUser, updateUser, deleteUser } = require('../controller/users');
+const UserController = require('../controller/users'); // Importar a classe UserController
 
 const router = express.Router();
+const userController = new UserController(); // Instanciar a classe UserController
 
-router.get('/', findByEmail);
-router.post('/register', registerUser);
-router.put('/update', updateUser);
-router.delete('/delete', deleteUser);
+// router.post('/login', userController.loginUser.bind(userControler));
+router.post('/register', userController.registerUser.bind(userController));
+router.post('/find', userController.findByEmail.bind(userController));
+router.put('/', userController.updateUser.bind(userController));
+router.delete('/', userController.deleteUser.bind(userController));
 
 module.exports = router;

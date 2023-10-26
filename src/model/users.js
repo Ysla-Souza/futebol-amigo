@@ -1,45 +1,60 @@
-const  connection = require('../connection');
+const connection = require('../connection');
+const md5 = require('md5');
 
-const findByEmail = async (email) => {
+class UserModel {
+
+  async login(body) {
+    const { email, password } = body;
     try {
-        //procura um usuário pelo email e retorna o resultado da busca
-        const find = await model.findByEmail(email);
-        return find;
+        const [query] = await connection.execute('SELECT * FROM mydb.user WHERE email = ? AND password = ?', [email, md5(password)]);
+        return query;
     } catch (error) {
         throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
     }
-};
+  }
 
-const registerUser = async (body) => {
+  async findByEmail(email) {
     try {
-        const register = await model.registerUser(body);
-        return register;
+      const [query] = await connection.execute('SELECT * FROM mydb.user WHERE email = ?', [email]);
+      return query;
     } catch (error) {
-        throw new Error(`An error occurred while trying to register for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to search for the user. Try again later (${error.message})`);
     }
-};
+  }
 
-const updateUser = async (body) => {
+  async registerUser(body) {
+    const { name, nickname, phone, email, password } = body;
     try {
-        const update = await model.registerUser(body);
-        return update;
+      const register = await connection.execute('INSERT INTO mydb.user (name, nickname, phone, email, password) VALUES (?, ?, ?, ?, ?)', [name, nickname, phone, email, md5(password)]);
+      return register;
     } catch (error) {
-        throw new Error(`An error occurred while trying to update for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to register for the user. Try again later (${error.message})`);
     }
-};
+  };
 
-const deleteUser = async (body) => {
+  async updateUser(body) {
+    const { name, nickname, phone, email, password } = body;
     try {
-        const remove = await model.registerUser(body);
-        return remove;
+      const update = await connection.execute(
+        'UPDATE mydb.user SET name = ?, nickname = ?, phone = ?, password = ? WHERE email = ?',
+        [name, nickname, phone, md5(password), email]
+      );
+      return update;
     } catch (error) {
-        throw new Error(`An error occurred while trying to delete for the user. Try again later (${error.message})`);
+      throw new Error(`An error occurred while trying to update the user. Try again later (${error.message})`);
     }
-};
+  };
+  
 
-module.exports = {
-    findByEmail,
-    registerUser,
-    updateUser,
-    deleteUser,
-};
+  async deleteUser(body) {
+    const { email } = body;
+    try {
+      const remove = await connection.execute('DELETE FROM mydb.user WHERE email = ?', [email]);
+      return remove;
+    } catch (error) {
+      throw new Error(`An error occurred while trying to delete the user. Try again later (${error.message})`);
+    }
+  };
+}
+
+module.exports = UserModel;

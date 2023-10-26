@@ -24,10 +24,9 @@ USE `mydb` ;
 DROP TABLE IF EXISTS `mydb`.`matches` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`matches` (
-  `matches_id` INT NOT NULL,
+  `matches_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  `data_time` DATETIME(6) NULL,
-  PRIMARY KEY (`matches_id`));
+  `data_time` DATETIME(6) NULL);
 
 
 -- -----------------------------------------------------
@@ -36,13 +35,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`matches` (
 DROP TABLE IF EXISTS `mydb`.`user` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`user` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
   `password` VARCHAR(32) NOT NULL,
   `nickname` VARCHAR(32) NOT NULL,
   `email` VARCHAR(45) NULL,
-  `phone` INT NULL,
-  PRIMARY KEY (`id`));
+  `phone` VARCHAR(30) NULL);
 
 
 -- -----------------------------------------------------
